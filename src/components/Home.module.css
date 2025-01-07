@@ -1,0 +1,25 @@
+.container_header{
+    text-align: center;
+}
+.actions{
+    display: flex;
+    flex-direction: column;
+   
+}
+
+.actions a {
+    text-decoration: none;
+    color: #16479d;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.5s;
+    padding: .5em;
+    margin: 3em 0 .5em;
+    max-width: 10em;
+    border-radius: 5px;
+}
+
+.actions a:hover {
+    background-color: #16479d;
+    color: #fff;
+}

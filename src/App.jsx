@@ -7,7 +7,7 @@ import AllEntregas from './components/AllEntregas'
 import Container from './components/Container'
 import CriarEntrega from './components/CriarEntrega'
 import Message from './components/Layouts/Message'
-
+import EntregaMap from './components/EntregaMap'
 function App() {
  
 
@@ -17,12 +17,14 @@ function App() {
     
       <Navbar />
       <Message />
-      <Container />
+      <Container>
       <Routes>
         <Route exact path='/' element={<Home />} />
         <Route exact path='/allentregas' element={<AllEntregas />} />
         <Route exact path='/create/entrega' element={<CriarEntrega />} />
+        <Route exact path='/entrega/:id' element={<EntregaMap />} />
         </Routes>
+        </Container>
       <Footer />
     </div>
     </BrowserRouter>
