@@ -1,4 +1,4 @@
-import styles from './Container.module.css'
+import styles from '../css/Container.module.css'
 const Container = ({children}) => {
 return(
     <main className={styles.container}>

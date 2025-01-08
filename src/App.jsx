@@ -1,13 +1,13 @@
 
-import {Link, BrowserRouter, Route, Routes} from 'react-router-dom'
-import Navbar from './components/NavBar'
-import Home from './components/Home'
-import Footer from './components/Footer'
-import AllEntregas from './components/AllEntregas'
-import Container from './components/Container'
-import CriarEntrega from './components/CriarEntrega'
+import { BrowserRouter, Route, Routes} from 'react-router-dom'
+import Navbar from './components/Layouts/NavBar'
+import Home from './components/pages/Home'
+import Footer from './components/Layouts/Footer'
+import AllEntregas from './components/pages/AllEntregas'
+import Container from './components/Layouts/Container'
+import CriarEntrega from './components/pages/CriarEntrega'
 import Message from './components/Layouts/Message'
-import EntregaMap from './components/EntregaMap'
+import EntregaMap from './components/pages/EntregaMap'
 function App() {
  
 

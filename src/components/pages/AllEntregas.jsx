@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import styles from './AllEntregas.module.css'
-import api from '../utils/api';
+import styles from '../css/AllEntregas.module.css'
+import api from '../../utils/api';
 import { Link } from 'react-router-dom'
 
 function AllEntregas() {

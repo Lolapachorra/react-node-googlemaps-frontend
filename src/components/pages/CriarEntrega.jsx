@@ -1,7 +1,7 @@
-import Input from './Form/Input'
-import styles from "./Form/Form.module.css";
+import Input from '../Form/Input'
+import styles from "../Form/Form.module.css";
 import { useState } from 'react';
-import api from '../utils/api'
+import api from '../../utils/api'
 
 function CriarEntrega() {
 
