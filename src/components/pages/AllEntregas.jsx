@@ -63,7 +63,9 @@ function AllEntregas() {
                                         <button onClick={() => {
                                             window.location.href = `/entrega/${entrega._id}`;
                                         }}> Ver Rota</button>
-                                        <button>Alterar</button>
+                                        <button>
+                                            <Link to={`/entrega/edit/${entrega._id}`}>    Alterar</Link>
+                                        </button>
                                     </td>
                                 </tr>
                             ))}

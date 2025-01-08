@@ -4,12 +4,13 @@ import { GoogleMap, LoadScript, DirectionsRenderer } from "@react-google-maps/ap
 import api from "../../utils/api";
 import styles from "../css/EntregaMap.module.css";
 
-
+import { Link } from "react-router-dom";
 
 function EntregaMap() {
     const [directions, setDirections] = useState(null);
     const [isApiLoaded, setIsApiLoaded] = useState(false);
     const [entrega, setEntrega] = useState({});
+    const [erro, setErro] = useState(false)
     const { id } = useParams();
 
     useEffect(() => {
@@ -30,6 +31,7 @@ function EntregaMap() {
                     calculateRoute(data.pontoPartida, data.pontoDestino);
                 }
             } catch (error) {
+                setErro(true)
                 console.error("Erro ao buscar rota:", error);
             }
         }
@@ -53,10 +55,12 @@ function EntregaMap() {
             }
         );
     };
-
+if(erro) return <h1>Rota não encontrada</h1>
     return (
         <div>
-            <h1>Mapa da Entrega: {entrega.nome || "Carregando..."}</h1>
+            <h1>Mapa da Entrega: {entrega.nome}</h1>
+             
+              
             <LoadScript
                 googleMapsApiKey={import.meta.env.VITE_API_KEY}
                 onLoad={() => setIsApiLoaded(true)}
@@ -69,16 +73,14 @@ function EntregaMap() {
                     {directions && <DirectionsRenderer directions={directions} />}
                 </GoogleMap>
             </LoadScript>
-            {directions ? (
+               
                 <div className={styles.route_details}>
                     <h3>📍 Partida: {entrega.pontoPartida}</h3>
                     <h3>📍 Destino: {entrega.pontoDestino}</h3>
-                    <h3>🛣 Distância: {entrega.distancia || "N/A"}</h3>
-                    <h3>⏳ Duração: {entrega.duracao || "N/A"}</h3>
+                    <h3>🛣 Distância: {entrega.distancia }</h3>
+                    <h3>⏳ Duração: {entrega.duracao}</h3>
                 </div>
-            ) : (
-                <p>🔴 Rota não encontrada ou inválida</p>
-            )}
+               
         </div>
     );
 }

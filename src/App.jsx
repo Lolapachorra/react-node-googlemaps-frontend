@@ -8,6 +8,7 @@ import Container from './components/Layouts/Container'
 import CriarEntrega from './components/pages/CriarEntrega'
 import Message from './components/Layouts/Message'
 import EntregaMap from './components/pages/EntregaMap'
+import EditEntrega from  './components/pages/EditEntrega'
 function App() {
  
 
@@ -23,6 +24,7 @@ function App() {
         <Route exact path='/allentregas' element={<AllEntregas />} />
         <Route exact path='/create/entrega' element={<CriarEntrega />} />
         <Route exact path='/entrega/:id' element={<EntregaMap />} />
+        <Route exact path='/entrega/edit/:id' element={<EditEntrega />}/>
         </Routes>
         </Container>
       <Footer />

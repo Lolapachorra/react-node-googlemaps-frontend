@@ -1,61 +1,84 @@
-import Input from '../Form/Input'
+// src/components/CriarEntrega.js
+import React, { useState } from 'react';
+import { useLoadScript, Autocomplete } from '@react-google-maps/api';
+import Input from '../Form/Input';
 import styles from "../Form/Form.module.css";
-import { useState } from 'react';
-import api from '../../utils/api'
+import api from '../../utils/api';
+
+const libraries = ["places"];
 
 function CriarEntrega() {
+    const [submitButton, setSubmitButton] = useState(false);
+    const [entrega, setEntrega] = useState({
+        nome: '',
+        pontoPartida: '',
+        pontoDestino: ''
+    });
 
-    // Função para envio do formulário
+    const [autocompletePartida, setAutocompletePartida] = useState(null);
+    const [autocompleteDestino, setAutocompleteDestino] = useState(null);
 
-    const [submitButton, setSubmitButton] = useState(false)
-    //create userState
-    const [entrega, setEntrega] = useState({});
+    const { isLoaded } = useLoadScript({
+        googleMapsApiKey: import.meta.env.VITE_API_KEY,
+        libraries,
+    });
 
-    function handleChange(e) {
+    const handleChange = (e) => {
         setEntrega({ ...entrega, [e.target.name]: e.target.value });
-    }
-    async function handleSubmit(e) {
+    };
+
+    const handlePlaceChanged = (field) => {
+        if (field === 'pontoPartida' && autocompletePartida) {
+            const place = autocompletePartida.getPlace();
+            setEntrega({ ...entrega, pontoPartida: place.formatted_address });
+        }
+        if (field === 'pontoDestino' && autocompleteDestino) {
+            const place = autocompleteDestino.getPlace();
+            setEntrega({ ...entrega, pontoDestino: place.formatted_address });
+        }
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitButton(true)
-        console.log(entrega)
+        setSubmitButton(true);
         try {
-            await api.post('/entregas/create', entrega).then((response) => {
-                console.log('Resposta do backend:', response.data);
-                alert('Entrega criada com sucesso!')
-                setSubmitButton(false)
-                //windows to allEntregas
-                window.location.href = '/allentregas'
-            }).catch((error) => {
-                console.error(error)
-                console.log(error.message || error.response)
-                alert('Ocorreu um erro ao tentar cadastrar a entrega. Verifique os dados e tente novamente.')
-                setSubmitButton(false)
-            })
-
+            const response = await api.post('/entregas/create', entrega);
+            console.log('Resposta do backend:', response.data);
+            alert('Entrega criada com sucesso!');
+            setSubmitButton(false);
+            window.location.href = '/allentregas';
+        } catch (error) {
+            console.error(error);
+            alert('Ocorreu um erro ao tentar cadastrar a entrega.');
+            setSubmitButton(false);
         }
-        catch (error) {
-            console.error("erro completo", error.message || error.response)
-            alert('Ocorreu um erro ao tentar criar a entrega. Verifique os dados e tente novamente.')
-            setSubmitButton(false)
-        }
+    };
 
-    }
+    if (!isLoaded) return <div>Carregando mapa...</div>;
     return (
         <section className={styles.form_container}>
-            <div>
-                <h1>
-                    Criar Entrega
-                </h1>
-            </div>
-            {/* Formulário para criação de entrega */}
+            <h1>Criar Entrega</h1>
             <form onSubmit={handleSubmit}>
-                <Input type='text' placeholder="Ex: " text="Nome Do Cliente" name="nome" handleOnChange={handleChange} />
-                <Input type='text' placeholder="Ex: Rio De Janeiro, RJ" text="Endereço atual" name="pontoPartida" handleOnChange={handleChange} />
-                <Input type='text' placeholder="Ex: São Paulo, SP" text="Endereço de entrega" name="pontoDestino" handleOnChange={handleChange} />
+                <Input type='text' text="Nome Do Cliente" name="nome" handleOnChange={handleChange} />
+                
+                <Autocomplete
+                    onLoad={(autocomplete) => setAutocompletePartida(autocomplete)}
+                    onPlaceChanged={() => handlePlaceChanged('pontoPartida')}
+                >
+                    <Input type='text' text="Endereço atual" name="pontoPartida" handleOnChange={handleChange} />
+                </Autocomplete>
+                
+                <Autocomplete
+                    onLoad={(autocomplete) => setAutocompleteDestino(autocomplete)}
+                    onPlaceChanged={() => handlePlaceChanged('pontoDestino')}
+                >
+                    <Input type='text' text="Endereço de entrega" name="pontoDestino" handleOnChange={handleChange} />
+                </Autocomplete>
+
                 <input type="submit" value="Enviar" disabled={submitButton} />
             </form>
         </section>
-    )
+    );
 }
 
 export default CriarEntrega;
